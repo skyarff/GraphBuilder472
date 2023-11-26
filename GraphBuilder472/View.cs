@@ -214,8 +214,7 @@ namespace GraphBuilder472
         {
 
             int n = number.Length;
-
-            int dx = 2 * (1 - n) - k * n / 2;
+            int dx = -k * (3 * n - 2) / 2;
             int dy = -k;
 
             for (int i = 0; i < n; i++)
