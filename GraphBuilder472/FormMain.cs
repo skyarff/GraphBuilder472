@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace GraphBuilder472
@@ -16,7 +15,6 @@ namespace GraphBuilder472
 
         private static NodeStack nodeStack = new NodeStack();
         private static Graph graph;
-        private static bool _lock = false;
         private static int mouseDown = 0;
 
         
@@ -38,6 +36,8 @@ namespace GraphBuilder472
 
             graph = new Graph(nodes);
 
+            
+
         }
 
 
@@ -49,7 +49,7 @@ namespace GraphBuilder472
                 (comboBox1.SelectedIndex == 2 ? 8 : -15));
 
             bool draw = Controller.StateHandler(e.X, e.Y, mouseDown, mode, graph, nodeStack);
-            DrawItems.DrawMap(graph, pictureBox1, draw, ref _lock);
+            DrawItems.DrawMap(graph, pictureBox1, draw, 5);
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -59,7 +59,7 @@ namespace GraphBuilder472
 
 
             bool draw = Controller.StateHandler(e.X, e.Y, mouseDown, mode, graph, nodeStack);
-            DrawItems.DrawMap(graph, pictureBox1, draw, ref _lock);
+            DrawItems.DrawMap(graph, pictureBox1, draw, 5);
         }
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
@@ -79,7 +79,7 @@ namespace GraphBuilder472
                 graph[nodeStack[1], nodeStack[0]] = c;
 
 
-                DrawItems.DrawMap(graph, pictureBox1, true, ref _lock);
+                DrawItems.DrawMap(graph, pictureBox1, true, 5);
             }
         }
 
@@ -99,11 +99,9 @@ namespace GraphBuilder472
                 Node tempNodeTwo = graph.prevList[tempNodeOne];
 
 
-
                 while (tempNodeTwo != graph.minIndexCalibr)
                 {
-                    
-
+ 
                     using (Graphics graphics = pictureBox1.CreateGraphics())
                     {
                         graphics.DrawLine(Pens.Blue, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
@@ -133,7 +131,6 @@ namespace GraphBuilder472
                 while (tempNodeTwo != graph.minIndexCalibr)
                 {
 
-
                     using (Graphics graphics = pictureBox1.CreateGraphics())
                     {
                         graphics.DrawLine(Pens.Blue, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
@@ -144,12 +141,11 @@ namespace GraphBuilder472
 
                 }
             }
-
         } 
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            DrawItems.DrawMap(graph, pictureBox1, true, ref _lock);
+            DrawItems.DrawMap(graph, pictureBox1, true, 5);
             timer1.Stop();
         }
     }

@@ -1,5 +1,8 @@
 ﻿
 
+using Microsoft.VisualBasic.Devices;
+using System.Windows.Forms;
+
 namespace GraphBuilder472
 {
 
