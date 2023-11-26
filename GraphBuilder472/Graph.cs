@@ -10,111 +10,165 @@ namespace GraphBuilder472
     class Graph
     {
 
-        private int cursor = 0;
-        private List<List<int>> adjacencyList;
-        private List<bool> reviewList;
+
         
-        internal List<int> shortWayList;
-        internal List<int> prevList;
+        private Dictionary<Node, bool> reviewList;
+        private Dictionary<Node, Dictionary<Node, int>> graphTable;
+
+        internal Dictionary<Node, int> shortWayList;
+        internal Dictionary<Node, Node> prevList;
+
         internal Dictionary<Node, int> dataLink;
+
+
+        internal Node minIndexCalibr = new Node(-1, -1);
+
+
+
         
 
 
-
-        public void Add()
-        {
-
-        }
-
-
-        public int this[int row, int col]
+        public int this[Node row, Node col]
         {
             get
             {
-                return adjacencyList[row][col];
+                return graphTable[row][col];
             }
 
             set
             {
-                adjacencyList[row][col] = value;
+                graphTable[row][col] = value;
             }
         }
 
        
-
-
-        public void CreateGraphTable(Dictionary<Node, int> nodes)
+        public void CreateGraphTable()
         {
-            adjacencyList = new List<List<int>>();
-            dataLink = nodes;
-            cursor = nodes.Keys.Count;
+            graphTable = new Dictionary<Node, Dictionary<Node, int>>();
 
-            for (int i = 0; i < nodes.Count; i++)
+
+
+            foreach (Node _node in dataLink.Keys)
             {
-                List<int> inner = new List<int>();
-                adjacencyList.Add(inner);
-                for (int j = 0; j < nodes.Count; j++)
+                Dictionary<Node, int> inner = new Dictionary<Node, int>();
+                graphTable.Add(_node, inner);
+
+
+                foreach (Node __node in dataLink.Keys)
                 {
-                    inner.Add(0);
+                    inner.Add(__node, 0);
+                }
+            }
+        }
+
+
+        public void ResetDijkstra()
+        {
+
+            shortWayList = new Dictionary<Node, int>();
+            prevList = new Dictionary<Node, Node>();
+            reviewList = new Dictionary<Node, bool>();
+
+
+            foreach (Node _node in dataLink.Keys)
+            {
+                shortWayList.Add(_node, -1);
+                prevList.Add(_node, minIndexCalibr);
+                reviewList.Add(_node, false);
+            }
+
+        }
+
+
+        public Graph()
+        {
+            //CreateGraphTable();
+            //ResetDijkstra();
+        }
+
+
+        public void AddNode(Node node)
+        {
+
+
+
+
+            graphTable = new Dictionary<Node, Dictionary<Node, int>>();
+
+
+
+            foreach (Node _node in dataLink.Keys)
+            {
+                Dictionary<Node, int> inner = new Dictionary<Node, int>();
+                graphTable.Add(_node, inner);
+
+
+                foreach (Node __node in dataLink.Keys)
+                {
+                    inner.Add(__node, 0);
                 }
             }
 
-        }
 
-        public Graph(Dictionary<Node, int> nodes)
-        {
-            CreateGraphTable(nodes);
-        
-            shortWayList = new List<int>();
-            prevList = new List<int>();
-            reviewList = new List<bool>();
 
-            for (int i = 0; i < nodes.Count; i++)
+            shortWayList = new Dictionary<Node, int>();
+            prevList = new Dictionary<Node, Node>();
+            reviewList = new Dictionary<Node, bool>();
+
+
+            foreach (Node _node in dataLink.Keys)
             {
-                shortWayList.Add(-1);
-                prevList.Add(-1);
-                reviewList.Add(false);
+                shortWayList.Add(_node, -1);
+                prevList.Add(_node, minIndexCalibr);
+                reviewList.Add(_node, false);
             }
+
         }
 
-
-        public void Dijkstra(int index)
+        public void RemoveNode()
         {
 
+        }
+
+        public void Dijkstra(Node index)
+         {
+            
             shortWayList[index] = 0;
             reviewList[index] = true;
 
-            for (int i = 0; i < adjacencyList.Count; i++)
+            for (int i = 0; i < graphTable.Count; i++)
             {
-                int minIndex = -1;
+                
+                Node minIndex = minIndexCalibr;
 
-                for (int k = 0; k < adjacencyList.Count; k++)
+ 
+                foreach (Node node in graphTable.Keys)
                 {
-                    if (reviewList[k])
+                    if (reviewList[node])
                     {
-                        if (minIndex == -1 || shortWayList[k] < shortWayList[minIndex])
+                        if (minIndex == minIndexCalibr || shortWayList[node] < shortWayList[minIndex])
                         {
-                            minIndex = k;
+                            minIndex = node;
+                        }
+                    }
+                }
+                if (minIndex == minIndexCalibr) return;
+               
+
+                foreach (Node node in graphTable.Keys)
+                {
+                    if (graphTable[minIndex][node] > 0)
+                    {
+                        if (shortWayList[node] == -1 || shortWayList[node] > graphTable[minIndex][node] + shortWayList[minIndex])
+                        {
+                            shortWayList[node] = graphTable[minIndex][node] + shortWayList[minIndex];
+                            prevList[node] = minIndex;
+                            reviewList[node] = true;
+
                         }
                     }
                 }
 
-
-                for (int j = 0; j < adjacencyList.Count; j++)
-                {
-                    
-
-                    if (adjacencyList[minIndex][j] > 0)
-                    {
-                        if (shortWayList[j] == -1 || shortWayList[j] > adjacencyList[minIndex][j] + shortWayList[minIndex])
-                        {
-                            shortWayList[j] = adjacencyList[minIndex][j] + shortWayList[minIndex];
-                            prevList[j] = minIndex;
-                            reviewList[j] = true;
-
-                        }
-                    }
-                }
                 reviewList[minIndex] = false;
             }
         }

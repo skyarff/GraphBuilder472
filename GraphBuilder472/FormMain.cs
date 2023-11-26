@@ -18,7 +18,6 @@ namespace GraphBuilder472
 
         //private static List<Node> nodes;
 
-        private static Dictionary<Node, int> nodes;
         private static Dictionary<string, int> state = new Dictionary<string, int>()
         {
             ["MouseDown"] = 0,
@@ -37,7 +36,19 @@ namespace GraphBuilder472
 
 
 
-            nodes = new Dictionary<Node, int>
+            //nodes = new Dictionary<Node, int>
+            //{
+            //    [new Node(100, 100)] = 0,
+            //    [new Node(200, 200)] = 1,
+            //    [new Node(300, 300)] = 2,
+            //    [new Node(400, 400)] = 3,
+            //};
+
+            //graph = new Graph(nodes);
+
+            graph = new Graph();
+
+            graph.dataLink = new Dictionary<Node, int>
             {
                 [new Node(100, 100)] = 0,
                 [new Node(200, 200)] = 1,
@@ -45,10 +56,8 @@ namespace GraphBuilder472
                 [new Node(400, 400)] = 3,
             };
 
-            graph = new Graph(nodes);
-
-
-            
+            graph.CreateGraphTable();
+            graph.ResetDijkstra();
 
 
 
@@ -86,7 +95,7 @@ namespace GraphBuilder472
             textbox.Text = mode.ToString();
 
             Node node = null;
-            foreach (Node _node in nodes.Keys)
+            foreach (Node _node in graph.dataLink.Keys)
             {
                 if (_node.X - _node.D / 2 <= x && _node.X + _node.D / 2 >= x)
                 {
@@ -147,13 +156,24 @@ namespace GraphBuilder472
                     {
                         Node newNode = new Node(x, y);
 
-
-                        nodes.Add(newNode, nodes.Keys.Count);
+                        graph.dataLink.Add(newNode, 0);
+ 
                     }
                     else
-                    {
-                        nodes.Remove(node);
+                    { 
+                        graph.dataLink.Remove(node);
                     }
+
+
+                    foreach (Node _node in graph.dataLink.Keys)
+                    {
+                        _node.relatedNodes = new List<Node>();
+                    }
+
+
+                    graph.CreateGraphTable();
+                    graph.ResetDijkstra();
+
 
 
                     DrawMap(pictureBox, ref _lock);
@@ -176,7 +196,8 @@ namespace GraphBuilder472
                     graphics.Clear(Color.Black);
 
 
-                    foreach (Node _node in nodes.Keys)
+
+                    foreach (Node _node in graph.dataLink.Keys)
                     {
                         for (int j = 0; j < _node.RelatedNodes.Count; j++)
                         {
@@ -185,7 +206,7 @@ namespace GraphBuilder472
                     }
 
 
-                    foreach (Node _node in nodes.Keys)
+                    foreach (Node _node in graph.dataLink.Keys)
                     {
                         if (_node.isSelected)
                         {
@@ -254,13 +275,13 @@ namespace GraphBuilder472
             if (nodeStack.Length == 2)
             {
 
-                int a = nodes[nodeStack[0]];
-                int b = nodes[nodeStack[1]];
+                int a = graph.dataLink[nodeStack[0]];
+                int b = graph.dataLink[nodeStack[1]];
                 int c = textBox2.Text.Length > 0 ? Convert.ToInt32(textBox2.Text) : 0;
 
 
-                graph[a, b] = c;
-                graph[b, a] = c;
+                graph[nodeStack[0], nodeStack[1]] = c;
+                graph[nodeStack[1], nodeStack[0]] = c;
 
 
                 nodeStack[0].RelatedNodes.Add(nodeStack[1]);
@@ -272,66 +293,72 @@ namespace GraphBuilder472
         }
 
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            DrawMap(pictureBox1, ref _lock);
-        }
-
         private void button2_Click_1(object sender, EventArgs e)
         {
-
-
             if (nodeStack.Length == 1)
             {
-                graph.Dijkstra(nodes[nodeStack[0]]);
-
-
-
-                DrawMap(pictureBox1, ref _lock);
+                graph.Dijkstra(nodeStack[0]);
             }
-
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
 
+        private void button5_Click(object sender, EventArgs e)
+        {
             if (nodeStack.Length == 1)
             {
-
-
                 Node tempNodeOne = nodeStack[0];
-                Node tempNodeTwo = null;
+                Node tempNodeTwo = graph.prevList[tempNodeOne];
 
-                int index = 0;
-                int temp = 0;
 
-                while (temp != -1)
+
+                while (tempNodeTwo != graph.minIndexCalibr)
                 {
-
-                    index = nodes[tempNodeOne];
-                    temp = graph.prevList[index];
-
-                    foreach (Node _node in nodes.Keys)
-                    {
-                        if (temp == nodes[_node])
-                        {
-                            tempNodeTwo = _node;
-                            break;
-                        }
-
-                        
-                    }
+                    
 
                     using (Graphics graphics = pictureBox1.CreateGraphics())
                     {
-                        graphics.DrawLine(Pens.Cyan, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
+                        graphics.DrawLine(Pens.Blue, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
                     }
 
                     tempNodeOne = tempNodeTwo;
+                    tempNodeTwo = graph.prevList[tempNodeOne];
+
                 }
 
 
             }
         }
+
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            if (nodeStack.Length == 2)
+            {
+                graph.Dijkstra(nodeStack[0]);
+
+
+                Node tempNodeOne = nodeStack[1];
+                Node tempNodeTwo = graph.prevList[tempNodeOne];
+
+
+                while (tempNodeTwo != graph.minIndexCalibr)
+                {
+
+
+                    using (Graphics graphics = pictureBox1.CreateGraphics())
+                    {
+                        graphics.DrawLine(Pens.Blue, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
+                    }
+
+                    tempNodeOne = tempNodeTwo;
+                    tempNodeTwo = graph.prevList[tempNodeOne];
+
+                }
+            }
+
+        }
+
+        
     }
 }

@@ -16,7 +16,7 @@ namespace GraphBuilder472
         internal bool isSelected = false;
 
 
-        private List<Node> relatedNodes = new List<Node>();
+        internal List<Node> relatedNodes = new List<Node>();
 
 
         internal int Count
