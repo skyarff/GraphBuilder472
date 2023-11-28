@@ -17,8 +17,6 @@ namespace GraphBuilder472
         private static Graph graph;
         private static int mouseDown = 0;
 
-        
-
 
         private void FormMain_Load(object sender, EventArgs e)
         {

@@ -32,7 +32,7 @@ namespace GraphBuilder472
                             _node.D * 2, _node.D * 2);
 
 
-                            DrawNumber(pictureBox, _x, _y, k, weight.ToString());
+                            DrawNumber(pictureBox, _x, _y, k, weight.ToString(), Pens.White);
                         }
                     }
                 }
@@ -42,19 +42,21 @@ namespace GraphBuilder472
                 {
                     if (graph.dataLink[i].isSelected)
                     {
-                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
+                        graphics.FillEllipse(Brushes.Orange, graph.dataLink[i].X - graph.dataLink[i].D / 2,
                             graph.dataLink[i].Y - graph.dataLink[i].D / 2,
                             graph.dataLink[i].D, graph.dataLink[i].D);
-                        graphics.DrawEllipse(Pens.Yellow, graph.dataLink[i].X - graph.dataLink[i].D / 2,
-                            graph.dataLink[i].Y - graph.dataLink[i].D / 2,
-                            graph.dataLink[i].D, graph.dataLink[i].D);
+                        //graphics.DrawEllipse(Pens.Orange, graph.dataLink[i].X - graph.dataLink[i].D / 2,
+                        //    graph.dataLink[i].Y - graph.dataLink[i].D / 2,
+                        //    graph.dataLink[i].D, graph.dataLink[i].D);
                     }
                     else
                     {
-                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
+                        graphics.FillEllipse(Brushes.FloralWhite, graph.dataLink[i].X - graph.dataLink[i].D / 2,
                             graph.dataLink[i].Y - graph.dataLink[i].D / 2,
                             graph.dataLink[i].D, graph.dataLink[i].D);
                     }
+
+                    DrawNumber(pictureBox, graph.dataLink[i].X, graph.dataLink[i].Y, k, (i + 1).ToString(), Pens.Black);
                 }
             }
 
@@ -62,7 +64,7 @@ namespace GraphBuilder472
 
         
 
-        private static void DrawDigit(PictureBox pictureBox, int x, int y, int k, string digit)
+        private static void DrawDigit(PictureBox pictureBox, int x, int y, int k, string digit, Pen pen)
         {
             Point[] points = null;
 
@@ -206,11 +208,11 @@ namespace GraphBuilder472
             using (Graphics graphics = pictureBox.CreateGraphics())
             {
          
-                graphics.DrawLines(Pens.White, points);
+                graphics.DrawLines(pen, points);
             }
         }
 
-        internal static void DrawNumber(PictureBox pictureBox, int x, int y, int k, string number)
+        internal static void DrawNumber(PictureBox pictureBox, int x, int y, int k, string number, Pen pen)
         {
 
             int n = number.Length;
@@ -219,7 +221,7 @@ namespace GraphBuilder472
 
             for (int i = 0; i < n; i++)
             {
-                DrawDigit(pictureBox, x + dx + 2 * k * i, y + dy, k, number[i].ToString());
+                DrawDigit(pictureBox, x + dx + 2 * k * i, y + dy, k, number[i].ToString(), pen);
             }
         }
 
