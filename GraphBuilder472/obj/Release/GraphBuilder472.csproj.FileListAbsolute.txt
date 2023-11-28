@@ -11,3 +11,16 @@ C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия �
 C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.csproj.CopyComplete
 C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.exe
 C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.pdb
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\bin\Release\GraphBuilder472.exe.config
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\bin\Release\GraphBuilder472.exe
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\bin\Release\GraphBuilder472.pdb
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\bin\Release\stdole.dll
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.csproj.AssemblyReference.cache
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.csproj.SuggestedBindingRedirects.cache
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.FormMain.resources
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.Properties.Resources.resources
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.csproj.GenerateResource.cache
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.csproj.CoreCompileInputs.cache
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.csproj.CopyComplete
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.exe
+C:\Users\bffus\OneDrive\Рабочий стол\GraphBuilder472 — копия — копия — копия\GraphBuilder472\obj\Release\GraphBuilder472.pdb

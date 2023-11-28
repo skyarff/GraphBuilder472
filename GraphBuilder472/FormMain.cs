@@ -75,12 +75,23 @@ namespace GraphBuilder472
 
                 int c = textBox2.Text.Length > 0 ? Convert.ToInt32(textBox2.Text) : 0;
 
-                graph[nodeStack[0], nodeStack[1]] = c;
-                graph[nodeStack[1], nodeStack[0]] = c;
 
+                if (c > 0)
+                {
+                    graph[nodeStack[0], nodeStack[1]] = c;
+                    graph[nodeStack[1], nodeStack[0]] = c;
+                }
+                else
+                {
+                    graph.graphTable[nodeStack[0]].Remove(nodeStack[1]);
+                    graph.graphTable[nodeStack[1]].Remove(nodeStack[0]);
+                }
 
+                
                 DrawItems.DrawMap(graph, pictureBox1, true, 5);
             }
+
+
         }
 
         private void button2_Click_1(object sender, EventArgs e)
@@ -148,5 +159,6 @@ namespace GraphBuilder472
             DrawItems.DrawMap(graph, pictureBox1, true, 5);
             timer1.Stop();
         }
+
     }
 }

@@ -43,13 +43,7 @@ namespace GraphBuilder472
             {
                 Dictionary<Node, int> inner = new Dictionary<Node, int>();
                 graphTable.Add(dataLink[i], inner);
-
-                for (int j = 0; j < dataLink.Count; j++)
-                {
-                    inner.Add(dataLink[j], 0);
-                }
             }
-
         }
 
 
@@ -88,21 +82,9 @@ namespace GraphBuilder472
 
         public void AddNode(Node node)
         {
-
             Dictionary<Node, int> temp = new Dictionary<Node, int>();
-            for (int i = 0; i < dataLink.Count; i++)
-            {
-                temp.Add(dataLink[i], 0);
-            }
             graphTable.Add(node, temp);
             
-
-
-            foreach (Node _node in graphTable.Keys)
-            {
-                graphTable[_node].Add(node, 0);
-            }
-
 
             dataLink.Add(node);
             shortWayList.Add(node, -1);
@@ -157,7 +139,8 @@ namespace GraphBuilder472
 
                 foreach (Node node in graphTable.Keys)
                 {
-                    if (graphTable[minIndex][node] > 0)
+
+                    if (graphTable[minIndex].ContainsKey(node))
                     {
                         if (shortWayList[node] == -1 || shortWayList[node] > graphTable[minIndex][node] + shortWayList[minIndex])
                         {
