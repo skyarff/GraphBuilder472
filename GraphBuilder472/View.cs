@@ -5,11 +5,18 @@ namespace GraphBuilder472
 {
     internal class DrawItems
     {
+        private static Bitmap bitmap;
+
         internal static void DrawMap(Graph graph, PictureBox pictureBox, bool draw, int k)
         {
             if (!draw) return;
 
-            using (Graphics graphics = pictureBox.CreateGraphics())
+
+            if (bitmap == null)
+                bitmap = new Bitmap(pictureBox.Width, pictureBox.Height);
+
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 graphics.Clear(Color.Black);
 
@@ -32,7 +39,7 @@ namespace GraphBuilder472
                             _node.D * 2, _node.D * 2);
 
 
-                            DrawNumber(pictureBox, _x, _y, k, weight.ToString(), Pens.White);
+                            DrawNumber(bitmap, _x, _y, k, weight.ToString(), Pens.White);
                         }
                     }
                 }
@@ -56,15 +63,18 @@ namespace GraphBuilder472
                             graph.dataLink[i].D, graph.dataLink[i].D);
                     }
 
-                    DrawNumber(pictureBox, graph.dataLink[i].X, graph.dataLink[i].Y, k, (i + 1).ToString(), Pens.Black);
+                    DrawNumber(bitmap, graph.dataLink[i].X, graph.dataLink[i].Y, k, (i + 1).ToString(), Pens.Black);
                 }
             }
+
+            pictureBox.Image = bitmap;
+
 
         }
 
         
 
-        private static void DrawDigit(PictureBox pictureBox, int x, int y, int k, string digit, Pen pen)
+        private static void DrawDigit(Bitmap bitmap, int x, int y, int k, string digit, Pen pen)
         {
             Point[] points = null;
 
@@ -205,14 +215,14 @@ namespace GraphBuilder472
                     break;
             }
 
-            using (Graphics graphics = pictureBox.CreateGraphics())
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
             {
-         
                 graphics.DrawLines(pen, points);
             }
         }
 
-        internal static void DrawNumber(PictureBox pictureBox, int x, int y, int k, string number, Pen pen)
+        internal static void DrawNumber(Bitmap bitmap, int x, int y, int k, string number, Pen pen)
         {
 
             int n = number.Length;
@@ -221,7 +231,7 @@ namespace GraphBuilder472
 
             for (int i = 0; i < n; i++)
             {
-                DrawDigit(pictureBox, x + dx + 2 * k * i, y + dy, k, number[i].ToString(), pen);
+                DrawDigit(bitmap, x + dx + 2 * k * i, y + dy, k, number[i].ToString(), pen);
             }
         }
 

@@ -1,9 +1,4 @@
-﻿
-
-using Microsoft.VisualBasic.Devices;
-using System.Windows.Forms;
-
-namespace GraphBuilder472
+﻿namespace GraphBuilder472
 {
 
     internal class Controller

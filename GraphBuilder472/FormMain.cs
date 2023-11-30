@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace GraphBuilder472
 {
+
     public partial class FormMain : Form
     {
         public FormMain()
@@ -12,6 +13,7 @@ namespace GraphBuilder472
             InitializeComponent();
         }
 
+       
 
         private static NodeStack nodeStack = new NodeStack();
         private static Graph graph;
@@ -90,39 +92,6 @@ namespace GraphBuilder472
             }
 
 
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            if (nodeStack.Length == 1)
-            {
-                graph.Dijkstra(nodeStack[0]);
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            if (nodeStack.Length == 1)
-            {
-                Node tempNodeOne = nodeStack[0];
-                Node tempNodeTwo = graph.prevList[tempNodeOne];
-
-
-                while (tempNodeTwo != graph.minIndexCalibr)
-                {
- 
-                    using (Graphics graphics = pictureBox1.CreateGraphics())
-                    {
-                        graphics.DrawLine(Pens.Blue, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
-                    }
-
-                    tempNodeOne = tempNodeTwo;
-                    tempNodeTwo = graph.prevList[tempNodeOne];
-
-                }
-
-
-            }
         }
 
         private void button4_Click(object sender, EventArgs e)
