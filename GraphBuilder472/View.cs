@@ -38,7 +38,6 @@ namespace GraphBuilder472
                             _y - _node.D,
                             _node.D * 2, _node.D * 2);
 
-
                             DrawNumber(bitmap, _x, _y, k, weight.ToString(), Pens.White);
                         }
                     }
@@ -49,21 +48,22 @@ namespace GraphBuilder472
                 {
                     if (graph.dataLink[i].isSelected)
                     {
-                        graphics.FillEllipse(Brushes.Orange, graph.dataLink[i].X - graph.dataLink[i].D / 2,
+                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
                             graph.dataLink[i].Y - graph.dataLink[i].D / 2,
                             graph.dataLink[i].D, graph.dataLink[i].D);
-                        //graphics.DrawEllipse(Pens.Orange, graph.dataLink[i].X - graph.dataLink[i].D / 2,
-                        //    graph.dataLink[i].Y - graph.dataLink[i].D / 2,
-                        //    graph.dataLink[i].D, graph.dataLink[i].D);
+                        graphics.DrawEllipse(Pens.Yellow, graph.dataLink[i].X - graph.dataLink[i].D / 2,
+                            graph.dataLink[i].Y - graph.dataLink[i].D / 2,
+                            graph.dataLink[i].D, graph.dataLink[i].D);
                     }
                     else
                     {
-                        graphics.FillEllipse(Brushes.FloralWhite, graph.dataLink[i].X - graph.dataLink[i].D / 2,
+                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
                             graph.dataLink[i].Y - graph.dataLink[i].D / 2,
                             graph.dataLink[i].D, graph.dataLink[i].D);
                     }
 
-                    DrawNumber(bitmap, graph.dataLink[i].X, graph.dataLink[i].Y, k, (i + 1).ToString(), Pens.Black);
+
+                    DrawNumber(bitmap, graph.dataLink[i].X, graph.dataLink[i].Y, k, (i + 1).ToString(), new Pen(Color.Black, 2));
                 }
             }
 
