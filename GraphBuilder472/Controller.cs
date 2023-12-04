@@ -4,10 +4,10 @@
     internal class Controller
     {
 
-        internal static bool StateHandler(int x, int y, int mouseDown, int mode, Graph graph, NodeStack nodeStack)
+        internal static bool StateHandler(int x, int y, int mouseDown, int mouseUp, int mode, Graph graph, NodeStack nodeStack)
         {
 
-            mode += mouseDown;
+            mode += mouseDown + mouseUp;
             Node node = null;
 
             for (int i = 0; i < graph.dataLink.Count; i++)
@@ -23,7 +23,8 @@
 
             switch (mode)
             {
-                case 3:
+                
+                case 5:
 
                     if (node != null)
                     {
@@ -33,8 +34,7 @@
                         return true;
                     }
                     break;
-                case 5:
-
+                case 10:
                     if (node != null)
                     {
                         if (!node.isSelected)
@@ -48,8 +48,7 @@
                         return true;
                     }
                     break;
-                case 9:
-
+                case 18:
                     if (node == null)
                     {
                         Node newNode = new Node(x, y);
