@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
@@ -23,9 +24,6 @@ namespace GraphBuilder472
             {
                 graphics.Clear(Color.Black);
 
-                Pen pen = new Pen(Color.White, 1f);
-                pen.CustomEndCap = new AdjustableArrowCap(6, 17);
-
                 foreach (Node _node in graph.graphTable.Keys)
                 {
                     foreach (Node __node in graph.graphTable[_node].Keys)
@@ -33,7 +31,18 @@ namespace GraphBuilder472
                         int weight = graph.graphTable[_node][__node];
                         if (weight > 0)
                         {
-                            graphics.DrawLine(pen, _node.X, _node.Y, __node.X, __node.Y);
+
+                            graphics.DrawLine(Pens.White, _node.X, _node.Y, __node.X, __node.Y);
+
+
+
+
+                            
+
+
+                            
+
+
 
                             int _x = _node.X + (__node.X - _node.X) * 2 / 3;
                             int _y = _node.Y + (__node.Y - _node.Y) * 2 / 3;
@@ -57,6 +66,32 @@ namespace GraphBuilder472
                             _node.D * 3 / 2, _node.D * 3 / 2);
 
                             DrawNumber(bitmap, _x, _y, k, weight.ToString(), Pens.White);
+
+                            if (true)
+                            {
+                                int c1 = 33;
+                                int c2 = 6;
+
+                                float xa = __node.X - _node.X;
+                                float ya = __node.Y - _node.Y;
+
+                                float r = (float)Math.Sqrt(xa * xa + ya * ya);
+
+                                float deltaX = (xa * c1 - ya * c2) / r;
+                                float deltaY = (xa * c2 + c1 * ya) / r;
+
+                                float nx = xa * (_node.D / r) / 2;
+                                float ny = ya * (_node.D / r) / 2;
+
+                                graphics.DrawLine(Pens.White, __node.X - nx, __node.Y - ny, __node.X - deltaX, __node.Y - deltaY);
+
+                                c2 = -c2;
+                                deltaX = (xa * c1 - ya * c2) / r;
+                                deltaY = (xa * c2 + c1 * ya) / r;
+
+                                graphics.DrawLine(Pens.White, __node.X - nx, __node.Y - ny, __node.X - deltaX, __node.Y - deltaY);
+
+                            }
                         }
                     }
                 }
@@ -261,6 +296,9 @@ namespace GraphBuilder472
                 DrawDigit(bitmap, x + dx + i * k * 3 / 2 , y + dy, k, number[i].ToString(), pen);
             }
         }
+
+
+
 
     }
 }
