@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GraphBuilder472
@@ -6,18 +7,19 @@ namespace GraphBuilder472
 
     class Graph
     {
+        [JsonProperty]
+        private Dictionary<string, bool> reviewList;
+        [JsonProperty]
+        internal Dictionary<string, Dictionary<string, int>> graphTable;
+        [JsonProperty]
+        internal Dictionary<string, int> shortWayList;
+        [JsonProperty]
+        internal Dictionary<string, string> prevList;
+        [JsonProperty]
+        internal Dictionary<string, Node> dataLink;
 
-        private Dictionary<Node, bool> reviewList;
-        internal Dictionary<Node, Dictionary<Node, int>> graphTable;
-        internal Dictionary<Node, int> shortWayList;
-        internal Dictionary<Node, Node> prevList;
 
-        //internal List<Node> dataLink;
-
-        internal Node minIndexCalibr = new Node(-1, -1);
-
-
-        public int this[Node row, Node col]
+        public int this[string row, string col]
         {
             get
             {
@@ -30,52 +32,70 @@ namespace GraphBuilder472
             }
         }
 
-       
-
+ 
 
         public void ResetDijkstra()
         {
 
-            shortWayList = new Dictionary<Node, int>();
-            prevList = new Dictionary<Node, Node>();
-            reviewList = new Dictionary<Node, bool>();
+            shortWayList = new Dictionary<string, int>();
+            prevList = new Dictionary<string, string>();
+            reviewList = new Dictionary<string, bool>();
 
 
-            foreach (Node node in graphTable.Keys)
+            foreach (string name in graphTable.Keys)
             {
-                shortWayList.Add(node, -1);
-                prevList.Add(node, minIndexCalibr);
-                reviewList.Add(node, false);
+                shortWayList.Add(name, -1);
+                prevList.Add(name, "-1");
+                reviewList.Add(name, false);
             }
 
         }
 
 
-        public Graph() { }
+        public Graph()
+        {
+            dataLink = new Dictionary<string, Node>();
+
+            graphTable = new Dictionary<string, Dictionary<string, int>>();
+
+            ResetDijkstra();
+        }
 
         public Graph(List<Node> nodes)
         {
+            dataLink = new Dictionary<string, Node>();
 
-            graphTable = new Dictionary<Node, Dictionary<Node, int>>();
             for (int i = 0; i < nodes.Count; i++)
             {
-                Dictionary<Node, int> inner = new Dictionary<Node, int>();
-                graphTable.Add(nodes[i], inner);
+                dataLink.Add(nodes[i].name, nodes[i]);
+            }
+
+            
+
+            graphTable = new Dictionary<string, Dictionary<string, int>>();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                Dictionary<string, int> inner = new Dictionary<string, int>();
+                graphTable.Add(nodes[i].name, inner);
             }
 
             ResetDijkstra();
         }
 
+        
+
         public void AddNode(int _x, int _y)
         {
             Node newNode = null;
+            string _name = "";
             int i = 1;
             bool flag = true;
             while (true)
             {
-                foreach (Node _node in graphTable.Keys)
+                
+                foreach (string name in graphTable.Keys)
                 {
-                    if (_node.name == i.ToString())
+                    if (name == i.ToString())
                     {
                         flag = false;
                         break;
@@ -85,6 +105,7 @@ namespace GraphBuilder472
                 if (flag)
                 {
                     newNode = new Node(_x, _y, i.ToString());
+                    _name = i.ToString();
                     break;
                 }
                 flag = true;
@@ -92,33 +113,35 @@ namespace GraphBuilder472
             }
 
 
-            Dictionary<Node, int> temp = new Dictionary<Node, int>();
-            graphTable.Add(newNode, temp);
+            Dictionary<string, int> temp = new Dictionary<string, int>();
+            graphTable.Add(_name, temp);
+            dataLink.Add(_name, newNode);
 
-
-            shortWayList.Add(newNode, -1);
-            prevList.Add(newNode, minIndexCalibr);
-            reviewList.Add(newNode, false);
+            shortWayList.Add(_name, -1);
+            prevList.Add(_name, "-1");
+            reviewList.Add(_name, false);
 
         }
 
-        public void RemoveNode(Node node)
+        public void RemoveNode(string name)
         {
-            graphTable.Remove(node);
+            graphTable.Remove(name);
 
 
-            foreach (Node _node in graphTable.Keys)
+            foreach (string _name in graphTable.Keys)
             {
-                graphTable[_node].Remove(node);
+                graphTable[_name].Remove(name);
             }
 
 
-            shortWayList.Remove(node);
-            prevList.Remove(node);
-            reviewList.Remove(node);
+            dataLink.Remove(name);
+
+            shortWayList.Remove(name);
+            prevList.Remove(name);
+            reviewList.Remove(name);
         }
 
-        public void Dijkstra(Node index)
+        public void Dijkstra(string index)
         {
             ResetDijkstra();
 
@@ -128,24 +151,26 @@ namespace GraphBuilder472
 
             for (int i = 0; i < graphTable.Count; i++)
             {
-                
-                Node minIndex = minIndexCalibr;
 
- 
-                foreach (Node node in graphTable.Keys)
+                string minIndex = "-1";
+
+
+                foreach (string node in graphTable.Keys)
                 {
                     if (reviewList[node])
                     {
-                        if (minIndex == minIndexCalibr || shortWayList[node] < shortWayList[minIndex])
+                        if (minIndex == "-1" || shortWayList[node] < shortWayList[minIndex])
                         {
-                            minIndex = node;
+                            minIndex = dataLink[node].name;
                         }
                     }
                 }
-                if (minIndex == minIndexCalibr) return;
-               
 
-                foreach (Node node in graphTable.Keys)
+
+                if (minIndex == "-1") return;
+
+
+                foreach (string node in graphTable.Keys)
                 {
 
                     if (graphTable[minIndex].ContainsKey(node))
@@ -165,20 +190,32 @@ namespace GraphBuilder472
         }
 
 
-
     }
 
     internal class Node
     {
-
-        internal string name {  get; }
+        [JsonProperty]
+        internal string name { get; set; }
+        [JsonProperty]
         internal int X { get; set; }
+        [JsonProperty]
         internal int Y { get; set; }
+        [JsonProperty]
         internal int Z { get; set; }
+        [JsonProperty]
         internal int D { get; set; }
 
+        //[JsonProperty]
         internal bool isSelected = false;
 
+        public Node()
+        {
+            name = "0";
+            X = 0;
+            Y = 0;
+            Z = 0;
+            D = 0;
+        }
 
         public Node(int _x, int _y)
         {

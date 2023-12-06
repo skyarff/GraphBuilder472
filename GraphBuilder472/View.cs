@@ -23,97 +23,97 @@ namespace GraphBuilder472
             {
                 graphics.Clear(Color.Black);
 
-                foreach (Node _node in graph.graphTable.Keys)
+                foreach (string _node in graph.graphTable.Keys)
                 {
-                    foreach (Node __node in graph.graphTable[_node].Keys)
+                    foreach (string __node in graph.graphTable[_node].Keys)
                     {
                         int weight = graph.graphTable[_node][__node];
                         if (weight > 0)
                         {
 
-                            graphics.DrawLine(Pens.White, _node.X, _node.Y, __node.X, __node.Y);
+                            graphics.DrawLine(Pens.White, graph.dataLink[_node].X, graph.dataLink[_node].Y, graph.dataLink[__node].X, graph.dataLink[__node].Y);
 
-                            int _x = _node.X + (__node.X - _node.X) * 2 / 3;
-                            int _y = _node.Y + (__node.Y - _node.Y) * 2 / 3;
+                            int _x = graph.dataLink[_node].X + (graph.dataLink[__node].X - graph.dataLink[_node].X) * 2 / 3;
+                            int _y = graph.dataLink[_node].Y + (graph.dataLink[__node].Y - graph.dataLink[_node].Y) * 2 / 3;
                         }
                     }
                 }
 
 
-                foreach (Node _node in graph.graphTable.Keys)
+                foreach (string _node in graph.graphTable.Keys)
                 {
-                    foreach (Node __node in graph.graphTable[_node].Keys)
+                    foreach (string __node in graph.graphTable[_node].Keys)
                     {
                         int weight = graph.graphTable[_node][__node];
                         if (weight > 0)
                         {
-                            int _x = _node.X + (__node.X - _node.X) * 2 / 3;
-                            int _y = _node.Y + (__node.Y - _node.Y) * 2 / 3;
+                            int _x = graph.dataLink[_node].X + (graph.dataLink[__node].X - graph.dataLink[_node].X) * 2 / 3;
+                            int _y = graph.dataLink[_node].Y + (graph.dataLink[__node].Y - graph.dataLink[_node].Y) * 2 / 3;
 
-                            graphics.FillEllipse(Brushes.Black, _x - _node.D * 3 / 4,
-                            _y - _node.D * 3 / 4,
-                            _node.D * 3 / 2, _node.D * 3 / 2);
+                            graphics.FillEllipse(Brushes.Black, _x - graph.dataLink[_node].D * 3 / 4,
+                            _y - graph.dataLink[_node].D * 3 / 4,
+                            graph.dataLink[_node].D * 3 / 2, graph.dataLink[_node].D * 3 / 2);
 
                             DrawNumber(bitmap, _x, _y, k, weight.ToString(), Pens.White);
 
                             if (true)
                             {
-                                int c1 = 33;
-                                int c2 = 6;
+                                int c1 = 30;
+                                int c2 = 4;
 
-                                float xa = __node.X - _node.X;
-                                float ya = __node.Y - _node.Y;
+                                float xa = graph.dataLink[__node].X - graph.dataLink[_node].X;
+                                float ya = graph.dataLink[__node].Y - graph.dataLink[_node].Y;
 
                                 float r = (float)Math.Sqrt(xa * xa + ya * ya);
 
                                 float deltaX = (xa * c1 - ya * c2) / r;
                                 float deltaY = (xa * c2 + c1 * ya) / r;
 
-                                float nx = xa * (_node.D / r) / 2;
-                                float ny = ya * (_node.D / r) / 2;
+                                float nx = xa * (graph.dataLink[_node].D / r) / 2;
+                                float ny = ya * (graph.dataLink[_node].D / r) / 2;
 
-                                graphics.DrawLine(Pens.White, __node.X - nx, __node.Y - ny, __node.X - deltaX, __node.Y - deltaY);
+                                graphics.DrawLine(Pens.White, graph.dataLink[__node].X - nx, graph.dataLink[__node].Y - ny, graph.dataLink[__node].X - deltaX, graph.dataLink[__node].Y - deltaY);
 
                                 c2 = -c2;
                                 deltaX = (xa * c1 - ya * c2) / r;
                                 deltaY = (xa * c2 + c1 * ya) / r;
 
-                                graphics.DrawLine(Pens.White, __node.X - nx, __node.Y - ny, __node.X - deltaX, __node.Y - deltaY);
+                                graphics.DrawLine(Pens.White, graph.dataLink[__node].X - nx, graph.dataLink[__node].Y - ny, graph.dataLink[__node].X - deltaX, graph.dataLink[__node].Y - deltaY);
 
                             }
                         }
                     }
                 }
+                 
 
 
-
-                foreach (Node _node in graph.graphTable.Keys)
+                foreach (string _node in graph.graphTable.Keys)
                 {
-                    if (nodeStack.Length > 0 && _node == nodeStack[0])
+                    if (nodeStack.Length > 0 && graph.dataLink[_node] == nodeStack[0])
                     {
-                        graphics.FillEllipse(Brushes.Red, _node.X - _node.D / 2,
-                             _node.Y - _node.D / 2,
-                             _node.D, _node.D);
+                        graphics.FillEllipse(Brushes.Red, graph.dataLink[_node].X - graph.dataLink[_node].D / 2,
+                             graph.dataLink[_node].Y - graph.dataLink[_node].D / 2,
+                             graph.dataLink[_node].D, graph.dataLink[_node].D);
 
-                        DrawNumber(bitmap, _node.X + _node.D / 3, _node.Y + _node.D / 3, 5, (1).ToString(), penWhite);
+                        DrawNumber(bitmap, graph.dataLink[_node].X + graph.dataLink[_node].D / 3, graph.dataLink[_node].Y + graph.dataLink[_node].D / 3, 5, (1).ToString(), penWhite);
                     }
-                    else if (nodeStack.Length > 1 && _node == nodeStack[1])
+                    else if (nodeStack.Length > 1 && graph.dataLink[_node] == nodeStack[1])
                     {
-                        graphics.FillEllipse(Brushes.Red, _node.X - _node.D / 2,
-                             _node.Y - _node.D / 2,
-                             _node.D, _node.D);
+                        graphics.FillEllipse(Brushes.Red, graph.dataLink[_node].X - graph.dataLink[_node].D / 2,
+                             graph.dataLink[_node].Y - graph.dataLink[_node].D / 2,
+                             graph.dataLink[_node].D, graph.dataLink[_node].D);
 
-                        DrawNumber(bitmap, _node.X + _node.D / 3, _node.Y + _node.D / 3, 5, (2).ToString(), penWhite);
+                        DrawNumber(bitmap, graph.dataLink[_node].X + graph.dataLink[_node].D / 3, graph.dataLink[_node].Y + graph.dataLink[_node].D / 3, 5, (2).ToString(), penWhite);
                     }
                     else
                     {
-                        graphics.FillEllipse(Brushes.Red, _node.X - _node.D / 2,
-                            _node.Y - _node.D / 2,
-                            _node.D, _node.D);
+                        graphics.FillEllipse(Brushes.Red, graph.dataLink[_node].X - graph.dataLink[_node].D / 2,
+                            graph.dataLink[_node].Y - graph.dataLink[_node].D / 2,
+                            graph.dataLink[_node].D, graph.dataLink[_node].D);
                     }
 
 
-                    DrawNumber(bitmap, _node.X, _node.Y, 5, _node.name, penBlack);
+                    DrawNumber(bitmap, graph.dataLink[_node].X, graph.dataLink[_node].Y, 5, graph.dataLink[_node].name, penBlack);
                 }
 
 

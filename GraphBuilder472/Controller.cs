@@ -11,16 +11,40 @@
             Node node = null;
 
 
-            foreach (Node _node in graph.graphTable.Keys)
+
+            foreach (string _node in graph.graphTable.Keys)
             {
-                if (_node.X - _node.D / 2 <= x && _node.X + _node.D / 2 >= x)
+                //if (_node.X - _node.D / 2 <= x && _node.X + _node.D / 2 >= x)
+                //{
+                //    if (_node.Y - _node.D / 2 <= y && _node.Y + _node.D / 2 >= y)
+                //    {
+                //        node = _node;
+                //    }
+                //}
+
+                if (graph.dataLink[_node].X - graph.dataLink[_node].D / 2 <= x && graph.dataLink[_node].X + graph.dataLink[_node].D / 2 >= x)
                 {
-                    if (_node.Y - _node.D / 2 <= y && _node.Y + _node.D / 2 >= y)
+                    if (graph.dataLink[_node].Y - graph.dataLink[_node].D / 2 <= y && graph.dataLink[_node].Y + graph.dataLink[_node].D / 2 >= y)
                     {
-                        node = _node;
+                        node = graph.dataLink[_node];
                     }
                 }
+
+
+
             }
+
+
+            //foreach (string _node in graph.graphTable.Keys)
+            //{
+            //    if (_node.X - _node.D / 2 <= x && _node.X + _node.D / 2 >= x)
+            //    {
+            //        if (_node.Y - _node.D / 2 <= y && _node.Y + _node.D / 2 >= y)
+            //        {
+            //            node = _node;
+            //        }
+            //    }
+            //}
 
 
 
@@ -58,7 +82,7 @@
                     }
                     else
                     {
-                        graph.RemoveNode(node);
+                        graph.RemoveNode(node.name);
                     }
                     return true;
             }

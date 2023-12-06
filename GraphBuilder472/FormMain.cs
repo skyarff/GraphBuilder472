@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace GraphBuilder472
@@ -28,17 +31,36 @@ namespace GraphBuilder472
             comboBox2.SelectedIndex = 0;
 
 
-            List<Node> nodes = new List<Node>
+
+
+
+            try
             {
-                new Node(200, 200, "1"),
-                new Node(600, 200, "2"),
-                new Node(200, 400, "3"),
-                new Node(600, 400, "4"),
-            };
+                string jsonGraph = File.ReadAllText("graph.json");
+                graph = JsonConvert.DeserializeObject<Graph>(jsonGraph);
 
-            graph = new Graph(nodes);
+            }
+            catch
+            {
 
-  
+                File.Delete("graph.json");
+                List<Node> nodes = new List<Node>
+                {
+                    new Node(200, 200, "1"),
+                    new Node(600, 200, "2"),
+                    new Node(200, 400, "3"),
+                    new Node(600, 400, "4"),
+                };
+                graph = new Graph(nodes);
+            }
+
+
+
+            
+
+
+
+
         }
 
 
@@ -89,24 +111,24 @@ namespace GraphBuilder472
                 {
                     if (c > 0)
                     {
-                        graph[nodeStack[0], nodeStack[1]] = c;
+                        graph[nodeStack[0].name, nodeStack[1].name] = c;
                     }
                     else
                     {
-                        graph.graphTable[nodeStack[0]].Remove(nodeStack[1]);
+                        graph.graphTable[nodeStack[0].name].Remove(nodeStack[1].name);
                     }
                 }
                 else if (comboBox2.SelectedIndex == 1)
                 {
                     if (c > 0)
                     {
-                        graph[nodeStack[0], nodeStack[1]] = c;
-                        graph[nodeStack[1], nodeStack[0]] = c;
+                        graph[nodeStack[0].name, nodeStack[1].name] = c;
+                        graph[nodeStack[1].name, nodeStack[0].name] = c;
                     }
                     else
                     {
-                        graph.graphTable[nodeStack[0]].Remove(nodeStack[1]);
-                        graph.graphTable[nodeStack[1]].Remove(nodeStack[0]);
+                        graph.graphTable[nodeStack[0].name].Remove(nodeStack[1].name);
+                        graph.graphTable[nodeStack[1].name].Remove(nodeStack[0].name);
                     }
                 }
 
@@ -125,15 +147,23 @@ namespace GraphBuilder472
 
             if (nodeStack.Length == 2)
             {
-                graph.Dijkstra(nodeStack[0]);
+                graph.Dijkstra(nodeStack[0].name);
 
 
                 Node tempNodeOne = nodeStack[1];
-                Node tempNodeTwo = graph.prevList[tempNodeOne];
 
+                if (!graph.dataLink.ContainsKey(graph.prevList[tempNodeOne.name]))
+                {
+                    textBox1.Text = "-1";
+                    textBox3.Text = "";
+                    return;
+                }
+                
+                Node tempNodeTwo = graph.dataLink[graph.prevList[tempNodeOne.name]];
                 string str = "";
 
-                while (tempNodeTwo != graph.minIndexCalibr)
+               
+                while (true)
                 {
 
                     using (Graphics graphics = pictureBox1.CreateGraphics())
@@ -143,12 +173,17 @@ namespace GraphBuilder472
 
                     str = $"{tempNodeOne.name}-" + str;
 
-                    tempNodeOne = tempNodeTwo;
-                    tempNodeTwo = graph.prevList[tempNodeOne];
 
+
+                    tempNodeOne = tempNodeTwo;
+
+                    if (graph.prevList[tempNodeOne.name] == "-1") break;
+
+                    tempNodeTwo = graph.dataLink[graph.prevList[tempNodeOne.name]];
+ 
                 }
 
-                textBox1.Text = graph.shortWayList[nodeStack[1]].ToString();
+                textBox1.Text = graph.shortWayList[nodeStack[1].name].ToString();
 
                 str = $"{tempNodeOne.name}-" + str;
                 textBox3.Text = str.Substring(0, str.Length - 1);
@@ -157,9 +192,31 @@ namespace GraphBuilder472
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            DrawItems.DrawMap(graph, pictureBox1, true, 5, nodeStack);
+            DrawItems.DrawMap(graph, pictureBox1, true, 4, nodeStack);
             timer1.Stop();
         }
 
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string graphJSON = JsonConvert.SerializeObject(graph, Formatting.Indented);
+            File.WriteAllText("graph.json", graphJSON);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            textBox1.Text = "";
+            textBox3.Text = "";
+
+            graph = new Graph();
+
+            DrawItems.DrawMap(graph, pictureBox1, true, 4, nodeStack);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string graphJSON = JsonConvert.SerializeObject(graph, Formatting.Indented);
+            File.WriteAllText("graph.json", graphJSON);
+        }
     }
 }
