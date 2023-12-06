@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace GraphBuilder472
@@ -33,16 +32,6 @@ namespace GraphBuilder472
                         {
 
                             graphics.DrawLine(Pens.White, _node.X, _node.Y, __node.X, __node.Y);
-
-
-
-
-                            
-
-
-                            
-
-
 
                             int _x = _node.X + (__node.X - _node.X) * 2 / 3;
                             int _y = _node.Y + (__node.Y - _node.Y) * 2 / 3;
@@ -97,35 +86,38 @@ namespace GraphBuilder472
                 }
 
 
-                for (int i = 0; i < graph.dataLink.Count; i++)
+
+                foreach (Node _node in graph.graphTable.Keys)
                 {
-
-                    if (nodeStack.Length > 0 && graph.dataLink[i] == nodeStack[0])
+                    if (nodeStack.Length > 0 && _node == nodeStack[0])
                     {
-                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
-                             graph.dataLink[i].Y - graph.dataLink[i].D / 2,
-                             graph.dataLink[i].D, graph.dataLink[i].D);
+                        graphics.FillEllipse(Brushes.Red, _node.X - _node.D / 2,
+                             _node.Y - _node.D / 2,
+                             _node.D, _node.D);
 
-                        DrawNumber(bitmap, graph.dataLink[i].X + graph.dataLink[i].D / 3, graph.dataLink[i].Y + graph.dataLink[i].D / 3, 5, (1).ToString(), penWhite);
+                        DrawNumber(bitmap, _node.X + _node.D / 3, _node.Y + _node.D / 3, 5, (1).ToString(), penWhite);
                     }
-                    else if (nodeStack.Length > 1 && graph.dataLink[i] == nodeStack[1])
+                    else if (nodeStack.Length > 1 && _node == nodeStack[1])
                     {
-                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
-                             graph.dataLink[i].Y - graph.dataLink[i].D / 2,
-                             graph.dataLink[i].D, graph.dataLink[i].D);
+                        graphics.FillEllipse(Brushes.Red, _node.X - _node.D / 2,
+                             _node.Y - _node.D / 2,
+                             _node.D, _node.D);
 
-                        DrawNumber(bitmap, graph.dataLink[i].X + graph.dataLink[i].D / 3, graph.dataLink[i].Y + graph.dataLink[i].D / 3, 5, (2).ToString(), penWhite);
+                        DrawNumber(bitmap, _node.X + _node.D / 3, _node.Y + _node.D / 3, 5, (2).ToString(), penWhite);
                     }
                     else
                     {
-                        graphics.FillEllipse(Brushes.Red, graph.dataLink[i].X - graph.dataLink[i].D / 2,
-                            graph.dataLink[i].Y - graph.dataLink[i].D / 2,
-                            graph.dataLink[i].D, graph.dataLink[i].D);
+                        graphics.FillEllipse(Brushes.Red, _node.X - _node.D / 2,
+                            _node.Y - _node.D / 2,
+                            _node.D, _node.D);
                     }
 
 
-                    DrawNumber(bitmap, graph.dataLink[i].X, graph.dataLink[i].Y, 5, (i + 1).ToString(), penBlack);
+                    DrawNumber(bitmap, _node.X, _node.Y, 5, _node.name, penBlack);
                 }
+
+
+
             }
 
             pictureBox.Image = bitmap;
@@ -287,13 +279,13 @@ namespace GraphBuilder472
         {
 
             int n = number.Length;
-            int dx = - k * ( 3 * n - 1) / 4;
+            int dx = - k * (2 * n - 1) / 2;
             int dy = -k;
 
 
             for (int i = 0; i < n; i++)
             {
-                DrawDigit(bitmap, x + dx + i * k * 3 / 2 , y + dy, k, number[i].ToString(), pen);
+                DrawDigit(bitmap, x + dx + i * k * 2 , y + dy, k, number[i].ToString(), pen);
             }
         }
 

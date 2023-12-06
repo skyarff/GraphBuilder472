@@ -10,16 +10,19 @@
             mode += mouseDown + mouseUp;
             Node node = null;
 
-            for (int i = 0; i < graph.dataLink.Count; i++)
+
+            foreach (Node _node in graph.graphTable.Keys)
             {
-                if (graph.dataLink[i].X - graph.dataLink[i].D / 2 <= x && graph.dataLink[i].X + graph.dataLink[i].D / 2 >= x)
+                if (_node.X - _node.D / 2 <= x && _node.X + _node.D / 2 >= x)
                 {
-                    if (graph.dataLink[i].Y - graph.dataLink[i].D / 2 <= y && graph.dataLink[i].Y + graph.dataLink[i].D / 2 >= y)
+                    if (_node.Y - _node.D / 2 <= y && _node.Y + _node.D / 2 >= y)
                     {
-                        node = graph.dataLink[i];
+                        node = _node;
                     }
                 }
             }
+
+
 
             switch (mode)
             {
@@ -51,9 +54,7 @@
                 case 18:
                     if (node == null)
                     {
-                        Node newNode = new Node(x, y);
-                        graph.AddNode(newNode);
-
+                        graph.AddNode(x, y);
                     }
                     else
                     {

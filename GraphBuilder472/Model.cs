@@ -7,14 +7,12 @@ namespace GraphBuilder472
     class Graph
     {
 
-
-        
         private Dictionary<Node, bool> reviewList;
         internal Dictionary<Node, Dictionary<Node, int>> graphTable;
         internal Dictionary<Node, int> shortWayList;
         internal Dictionary<Node, Node> prevList;
 
-        internal List<Node> dataLink;
+        //internal List<Node> dataLink;
 
         internal Node minIndexCalibr = new Node(-1, -1);
 
@@ -33,18 +31,6 @@ namespace GraphBuilder472
         }
 
        
-        public void CreateGraphTable()
-        {
-           
-            graphTable = new Dictionary<Node, Dictionary<Node, int>>();
-
-
-            for (int i = 0; i < dataLink.Count; i++)
-            {
-                Dictionary<Node, int> inner = new Dictionary<Node, int>();
-                graphTable.Add(dataLink[i], inner);
-            }
-        }
 
 
         public void ResetDijkstra()
@@ -55,42 +41,64 @@ namespace GraphBuilder472
             reviewList = new Dictionary<Node, bool>();
 
 
-            for (int i = 0; i < dataLink.Count; i++)
+            foreach (Node node in graphTable.Keys)
             {
-                shortWayList.Add(dataLink[i], -1);
-                prevList.Add(dataLink[i], minIndexCalibr);
-                reviewList.Add(dataLink[i], false);
+                shortWayList.Add(node, -1);
+                prevList.Add(node, minIndexCalibr);
+                reviewList.Add(node, false);
             }
 
         }
 
 
-        public Graph()
-        {
-            //CreateGraphTable();
-            //ResetDijkstra();
-        }
+        public Graph() { }
 
         public Graph(List<Node> nodes)
         {
-            dataLink = nodes;
 
-            CreateGraphTable();
+            graphTable = new Dictionary<Node, Dictionary<Node, int>>();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                Dictionary<Node, int> inner = new Dictionary<Node, int>();
+                graphTable.Add(nodes[i], inner);
+            }
+
             ResetDijkstra();
         }
 
-
-        public void AddNode(Node node)
+        public void AddNode(int _x, int _y)
         {
+            Node newNode = null;
+            int i = 1;
+            bool flag = true;
+            while (true)
+            {
+                foreach (Node _node in graphTable.Keys)
+                {
+                    if (_node.name == i.ToString())
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag)
+                {
+                    newNode = new Node(_x, _y, i.ToString());
+                    break;
+                }
+                flag = true;
+                i++;
+            }
+
+
             Dictionary<Node, int> temp = new Dictionary<Node, int>();
-            graphTable.Add(node, temp);
-            
+            graphTable.Add(newNode, temp);
 
-            dataLink.Add(node);
-            shortWayList.Add(node, -1);
-            prevList.Add(node, minIndexCalibr);
-            reviewList.Add(node, false);
 
+            shortWayList.Add(newNode, -1);
+            prevList.Add(newNode, minIndexCalibr);
+            reviewList.Add(newNode, false);
 
         }
 
@@ -104,7 +112,7 @@ namespace GraphBuilder472
                 graphTable[_node].Remove(node);
             }
 
-            dataLink.Remove(node);
+
             shortWayList.Remove(node);
             prevList.Remove(node);
             reviewList.Remove(node);
@@ -162,6 +170,8 @@ namespace GraphBuilder472
 
     internal class Node
     {
+
+        internal string name {  get; }
         internal int X { get; set; }
         internal int Y { get; set; }
         internal int Z { get; set; }
@@ -172,6 +182,16 @@ namespace GraphBuilder472
 
         public Node(int _x, int _y)
         {
+            name = "0";
+            X = _x;
+            Y = _y;
+            Z = 0;
+            D = 33;
+        }
+
+        public Node(int _x, int _y, string _name)
+        {
+            name = _name;
             X = _x;
             Y = _y;
             Z = 0;

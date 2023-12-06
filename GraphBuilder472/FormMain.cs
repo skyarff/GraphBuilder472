@@ -30,10 +30,10 @@ namespace GraphBuilder472
 
             List<Node> nodes = new List<Node>
             {
-                new Node(200, 200),
-                new Node(600, 200),
-                new Node(200, 400),
-                new Node(600, 400),
+                new Node(200, 200, "1"),
+                new Node(600, 200, "2"),
+                new Node(200, 400, "3"),
+                new Node(600, 400, "4"),
             };
 
             graph = new Graph(nodes);
@@ -131,6 +131,7 @@ namespace GraphBuilder472
                 Node tempNodeOne = nodeStack[1];
                 Node tempNodeTwo = graph.prevList[tempNodeOne];
 
+                string str = "";
 
                 while (tempNodeTwo != graph.minIndexCalibr)
                 {
@@ -140,10 +141,17 @@ namespace GraphBuilder472
                         graphics.DrawLine(Pens.Blue, tempNodeOne.X, tempNodeOne.Y, tempNodeTwo.X, tempNodeTwo.Y);
                     }
 
+                    str = $"{tempNodeOne.name}-" + str;
+
                     tempNodeOne = tempNodeTwo;
                     tempNodeTwo = graph.prevList[tempNodeOne];
 
                 }
+
+                textBox1.Text = graph.shortWayList[nodeStack[1]].ToString();
+
+                str = $"{tempNodeOne.name}-" + str;
+                textBox3.Text = str.Substring(0, str.Length - 1);
             }
         } 
 
